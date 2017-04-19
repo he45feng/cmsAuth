@@ -170,7 +170,7 @@
             if(response.status == 200){
               let roles = response.data;
               for(let i=0; i<roles.length;i++){
-                This.roleList.push(roles[i]);
+                This.roleList.push(roles[i]); 
               }
             }
           })
