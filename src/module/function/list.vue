@@ -43,7 +43,7 @@
       <span>确定要删除吗？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="del()">确 定</el-button>
+        <el-button type="primary" @click="del(funList)">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -102,20 +102,22 @@ import Cms from '../../base-config.js'
 
     	},
     	showDelDialog(idx,data){
-    		this.infoidx=data[idx].fun_id;
+    		this.infoidx=idx;
     		this.dialogVisible=true;
     	},
-    	del(){//删除
-    		this.funList.splice(this.infoidx,1);
+    	del(data){//删除
+    		
+    		let funid =data[this.infoidx].fun_id;
     		this.dialogVisible=false;
     		var url=Cms.ip+'/rms/rmsService/deleteFunctions?';
-    		var params='{fun_id:"'+this.infoidx+'"}';
+    		var params='{fun_id:"'+funid+'"}';
     		console.log(this.infoidx);
     		axios.get(url+params,{}).then(function(response){
     			console.log(response);
     		}).catch(function(error){
     			console.log(error);
     		});
+    		this.funList.splice(this.infoidx,1);
     		this.dialogVisible=false;
     	},
     	submit(){
