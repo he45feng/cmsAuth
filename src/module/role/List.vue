@@ -71,18 +71,8 @@
         dialogFormVisible: false,
         formLabelWidth: '120px',
         dialogVisible:false,
-        roleList: [{
-          'role_id':'1',
-          'role_name':'总裁办',
-          'created_user_account':'78232',
-          'created_user_name':'李宁',
-          'created_date':'2017-03-09',
-          'role_description' : '总裁办所有人都有权限'
-        }],
-        editFrom: {
-          'role_name': 'ff',
-          'role_description' : '总裁办所有人都有权限'
-        }
+        roleList: [],
+        editFrom: {}
       }
     },
     mounted(){
@@ -104,7 +94,6 @@
           'role_name' : data[idx].role_name,
           'role_description' : data[idx].role_description
         }
-
       },
       showDelDialog(idx){ //显示删除提示框
       	this.infoIdx = idx;
@@ -113,13 +102,14 @@
       del(){ //删除
         var This = this;
         var url = Cms.ip + '/rms/role/deleteRole';
-        var param = {'role_id':This.roleList[This.infoIdx].role_id};
 
-        Cms.axios(url+"?"+JSON.stringify(param),{},function(response){
-          if(response.status == 200){
-              This.roleList.splice(This.infoIdx,1);
-              This.dialogVisible = false;
-          }
+        Cms.axios(url,{
+              'role_id':This.roleList[This.infoIdx].role_id
+            },function(response){
+              if(response.status == 200){
+                  This.roleList.splice(This.infoIdx,1);
+                  This.dialogVisible = false;
+              }
         });
       },
       submit(dialogType){ //提交
@@ -138,27 +128,29 @@
           var params = JSON.stringify(params);
           var url = Cms.ip + '/rms/role/addRole';
           //发送ajax请求
-          Cms.axios(url+"?"+params,{},function(response){
-            if(response.status == 200){
-              This.roleList.unshift(response.data);
-              This.dialogFormVisible = false;
-            }
+          Cms.axios(url,{
+              'role_name' : This.editFrom.role_name,
+              'role_description':This.editFrom.role_description
+            },function(response){
+              if(response.status == 200){
+                This.roleList.unshift(response.data);
+                This.dialogFormVisible = false;
+              }
           });
       	}else if(dialogType==1){ //提交修改角色
-          var params = {
-            'role_id' : This.roleList[This.infoIdx].role_id,
-            'role_name' : This.editFrom.role_name,
-            'role_description':This.editFrom.role_description
-          };
           var url = Cms.ip + '/rms/role/updateRole';
           //发送ajax请求
-          Cms.axios(url+"?"+JSON.stringify(params),{},function(response){
-            if(response.status == 200){
-              //console.log(response);
-              This.roleList[This.infoIdx].role_name = params.role_name,
-              This.roleList[This.infoIdx].role_description = params.role_description,
-              This.dialogFormVisible = false;
-            }
+          Cms.axios(url,{
+              'role_id' : This.roleList[This.infoIdx].role_id,
+              'role_name' : This.editFrom.role_name,
+              'role_description':This.editFrom.role_description
+            },function(response){
+              if(response.status == 200){
+                //console.log(response);
+                This.roleList[This.infoIdx].role_name = This.editFrom.role_name,
+                This.roleList[This.infoIdx].role_description = This.editFrom.role_description,
+                This.dialogFormVisible = false;
+              }
           });
       	}
       },
