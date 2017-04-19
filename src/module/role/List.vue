@@ -22,7 +22,7 @@
     <el-dialog :title="dialogTitle" size="small" v-model="dialogFormVisible">
       <el-form :model="editFrom">
         <el-form-item label="分类名称：" :label-width="formLabelWidth">
-          <el-input v-model="editFrom.role_name"  placeholder="请输入分类名称" auto-complete="off"></el-input>
+          <el-input v-model.trim="editFrom.role_name"  placeholder="请输入分类名称" auto-complete="off"></el-input>
         </el-form-item>
        
         <el-form-item label="描述：" :label-width="formLabelWidth">
@@ -30,7 +30,7 @@
 			  type="textarea"
 			  :rows="2"
 			  placeholder="请输入内容"
-			  v-model="editFrom.role_description">
+			  v-model.trim="editFrom.role_description">
 			</el-input>
     	</el-form-item>
       </el-form>
@@ -59,7 +59,6 @@
   }
 </style>
 <script>
-	import axios from 'axios'
 	import  Cms from '../../base-config'
   export default {
     name:'activePublic',
@@ -112,42 +111,70 @@
         this.dialogVisible = true;
       },
       del(){ //删除
-      	this.roleList.splice(this.infoIdx,1);
-      	this.dialogVisible = false;
+        var This = this;
+        var url = Cms.ip + '/rms/role/deleteRole';
+        var param = {'role_id':This.roleList[This.infoIdx].role_id};
+
+        Cms.axios(url+"?"+JSON.stringify(param),{},function(response){
+          if(response.status == 200){
+              This.roleList.splice(This.infoIdx,1);
+              This.dialogVisible = false;
+          }
+        });
       },
       submit(dialogType){ //提交
-      	if(dialogType==0){
-      		this.roleList.unshift({
-	          'role_id':'2888',
-	          'role_name':'人事部',
-	          'created_user_account':'7652',
-	          'created_user_name':'张小明',
-	          'created_date':'2017-03-09',
-	          'role_description' : '张小明独享'
-	        });
-      	}else if(dialogType==1){
-      		this.roleList[this.infoIdx].role_name = this.editFrom.role_name;
-      		this.roleList[this.infoIdx].role_description = this.editFrom.role_description;
+        var This = this;
+        
+        if(!This.editFrom.role_name){
+            alert("请输入分类名称");
+            return;
+        }
+       
+      	if(dialogType==0){ //提交新增角色分类
+          var params = {
+            'role_name' : This.editFrom.role_name,
+            'role_description':This.editFrom.role_description
+          };
+          var params = JSON.stringify(params);
+          var url = Cms.ip + '/rms/role/addRole';
+          //发送ajax请求
+          Cms.axios(url+"?"+params,{},function(response){
+            if(response.status == 200){
+              This.roleList.unshift(response.data);
+              This.dialogFormVisible = false;
+            }
+          });
+      	}else if(dialogType==1){ //提交修改角色
+          var params = {
+            'role_id' : This.roleList[This.infoIdx].role_id,
+            'role_name' : This.editFrom.role_name,
+            'role_description':This.editFrom.role_description
+          };
+          var url = Cms.ip + '/rms/role/updateRole';
+          //发送ajax请求
+          Cms.axios(url+"?"+JSON.stringify(params),{},function(response){
+            if(response.status == 200){
+              //console.log(response);
+              This.roleList[This.infoIdx].role_name = params.role_name,
+              This.roleList[This.infoIdx].role_description = params.role_description,
+              This.dialogFormVisible = false;
+            }
+          });
       	}
-      	this.dialogFormVisible = false;
       },
       
       getRoleList(){ //查询角色分类列表
       		var This = this;
-			var url = Cms.ip + '/rms/role/queryRole';
-			axios.get(url, {}).then(function (response) {
-				if(response.status == 200){
-					console.log(response);
-					let roles = response.data;
-					for(let i=0; i<roles.length;i++){
-						This.roleList.push(roles[i]);
-					}
-				}
-		  	}).catch(function (error) {
-		    	console.log(error);
-		  	});
-		}
-
+    			var url = Cms.ip + '/rms/role/queryRole';
+          Cms.axios(url,{},function(response){
+            if(response.status == 200){
+              let roles = response.data;
+              for(let i=0; i<roles.length;i++){
+                This.roleList.push(roles[i]); 
+              }
+            }
+          })
+    		}
     }
   }
 </script> 
