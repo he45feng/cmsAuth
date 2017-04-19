@@ -79,7 +79,7 @@
     	this.getRoleList();
     },
     methods: {
-    	addRole(){ //新增角色分类
+    	addRole(){ //新增角色分类 
     		this.dialogType = 0;
     		this.editFrom={};
     		this.dialogFormVisible = true;
