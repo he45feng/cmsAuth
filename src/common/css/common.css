@@ -1,0 +1,37 @@
+.umar-t5{
+  margin-top: 5px;
+}
+.umar-t10{
+  margin-top: 10px;
+}
+.umar-t15{
+  margin-top: 15px;
+}
+.umar-t20{
+  margin-top: 20px;
+}
+.uinn-a5{
+  padding: 5px;
+}
+.uinn-a10{
+  padding: 10px;
+}
+.uinn-a15{
+  padding: 15px;
+}
+.uinn-a20{
+  padding: 20px;
+}
+.tx-c{
+  text-align: center;
+}
+.bc-txt{
+  color:#fff;
+}
+.uc-a5{
+  -webkit-border-radius:5px;
+  border-radius: 5px;
+}
+.cms-act:active {
+    opacity: 0.6;
+}
