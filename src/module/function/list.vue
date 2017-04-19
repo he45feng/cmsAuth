@@ -106,18 +106,15 @@ import Cms from '../../base-config.js'
     		this.dialogVisible=true;
     	},
     	del(data){//删除
-    		
     		let funid =data[this.infoidx].fun_id;
-    		this.dialogVisible=false;
-    		var url=Cms.ip+'/rms/rmsService/deleteFunctions?';
-    		var params='{fun_id:"'+funid+'"}';
-    		console.log(this.infoidx);
-    		axios.get(url+params,{}).then(function(response){
-    			console.log(response);
-    		}).catch(function(error){
-    			console.log(error);
+    		var url=Cms.ip+'/rms/rmsService/deleteFunctions';
+    		var params={fun_id:funid};
+    		params=JSON.stringify(params);
+    		Cms.axios(url+'?'+params,{},function(response){
+    			if(response.status==200){
+					this.funList.splice(this.infoidx,1);
+    			}
     		});
-    		this.funList.splice(this.infoidx,1);
     		this.dialogVisible=false;
     	},
     	submit(){
