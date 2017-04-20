@@ -13,7 +13,7 @@
       <el-table-column fixed="right" label="操作">
       <template prop="id" scope="scope">
         <el-button  @click.native.prevent="edit(scope.$index, roleList)" type="text" size="small">编辑</el-button>
-        <el-button  @click.native.prevent="showDelDialog(scope.$index, roleList)" type="text" size="small">删除</el-button>
+        <el-button  @click.native.prevent="del(scope.$index, roleList)" type="text" size="small">删除</el-button>
       </template>
       </el-table-column>
     </el-table>
@@ -41,7 +41,9 @@
     </el-dialog>
 	<!--编辑、添加dialog结束-->
 
-	<!-- 删除提示开始 -->
+  <cms-dialog :showDialog="showDialog"></cms-dialog>
+
+	<!-- 删除提示开始
     <el-dialog title="提示" v-model="dialogVisible" size="tiny">
       <span>确定要删除吗？</span>
       <span slot="footer" class="dialog-footer">
@@ -49,7 +51,7 @@
         <el-button type="primary" @click="del">确 定</el-button>
       </span>
     </el-dialog>
-	<!-- 删除提示结束 -->
+	 删除提示结束 -->
   </div>
 </template>
 <style>
@@ -59,27 +61,37 @@
   }
 </style>
 <script>
-	import  Cms from '../../base-config'
+  import Dialog from '../../components/Dialog'
+	import Cms from '../../base-config'
+
   export default {
     name:'activePublic',
     data() {
       return {
+        showDialog : {
+          dialogVisible : false,
+          title : '',
+          content : '',
+          callBack : function(){}
+        },
       	infoIdx : 0, //第几条数据索引
       	dialogType :0, //对话框类型，0：新增，1：编辑
       	dialogTitle : '',
       	dialogTableVisible: false,
         dialogFormVisible: false,
         formLabelWidth: '120px',
-        dialogVisible:false,
         roleList: [],
         editFrom: {}
       }
+    },
+    components:{
+      "cms-dialog":Dialog
     },
     mounted(){
     	this.getRoleList();
     },
     methods: {
-    	addRole(){ //新增角色分类 
+    	addRole(){ //新增角色分类
     		this.dialogType = 0;
     		this.editFrom={};
     		this.dialogFormVisible = true;
@@ -95,22 +107,25 @@
           'role_description' : data[idx].role_description
         }
       },
-      showDelDialog(idx){ //显示删除提示框
-      	this.infoIdx = idx;
-        this.dialogVisible = true;
-      },
-      del(){ //删除
-        var This = this;
-        var url = Cms.ip + '/rms/role/deleteRole';
-
-        Cms.axios(url,{
-              'role_id':This.roleList[This.infoIdx].role_id
-            },function(response){
-              if(response.status == 200){
-                  This.roleList.splice(This.infoIdx,1);
-                  This.dialogVisible = false;
-              }
-        });
+      del(idx){
+        this.showDialog = {//显示删除提示框
+          dialogVisible : true,
+          title : '提示',
+          content : '确定要删除吗？',
+          callBack : function(){
+            alert(idx)
+            var This = this;
+            var url = Cms.ip + '/rms/role/deleteRole';
+            Cms.axios(url,{ //发送删除请求
+                  'role_id':This.roleList[idx].role_id
+                },function(response){
+                  if(response.status == 200){
+                      This.roleList.splice(idx,1);
+                      This.dialogVisible = false;
+                  }
+            });
+          }
+        }
       },
       submit(dialogType){ //提交
         var This = this;
