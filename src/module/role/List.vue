@@ -93,20 +93,19 @@
         }
       },
       del(idx){ 
-          this.showDialog = {//显示删除提示框
+          var This = this;
+          This.showDialog = {//显示删除提示框
           dialogVisible : true,
           title : '提示',
           content : '确定要删除吗？',
           callBack : function(){
-            alert(idx)
-            var This = this;
             var url = Cms.ip + '/rms/role/deleteRole';
             Cms.axios(url,{ //发送删除请求
                   'role_id':This.roleList[idx].role_id
                 },function(response){
                   if(response.status == 200){
                       This.roleList.splice(idx,1);
-                      This.dialogVisible = false;
+                      This.showDialog.dialogVisible = false;
                   }
             });
           }
