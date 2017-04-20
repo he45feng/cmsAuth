@@ -42,15 +42,6 @@
 
   <cms-dialog :showDialog="showDialog"></cms-dialog>
 
-	<!-- 删除提示开始
-    <el-dialog title="提示" v-model="dialogVisible" size="tiny">
-      <span>确定要删除吗？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="del">确 定</el-button>
-      </span>
-    </el-dialog>
-	 删除提示结束 -->
   </div>
 </template>
 <style>
