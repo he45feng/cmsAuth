@@ -1,6 +1,5 @@
 <template>
   <div>
-    
     <el-button type="primary" icon="plus"  @click="addRole">新增</el-button>
 
     <el-table :data="roleList" border style="width: 100%" class="umar-t10">
