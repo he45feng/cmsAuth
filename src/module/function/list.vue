@@ -110,35 +110,60 @@ import Cms from '../../base-config.js'
     		var url=Cms.ip+'/rms/rmsService/deleteFunctions';
     		var params={fun_id:funid};
     		params=JSON.stringify(params);
+    		var that=this;
     		Cms.axios(url+'?'+params,{},function(response){
     			if(response.status==200){
-					this.funList.splice(this.infoidx,1);
+					that.funList.splice(that.infoidx,1);
     			}
     		});
     		this.dialogVisible=false;
     	},
     	submit(){
-    		var url=Cms.ip+'/rms/rmsService/addFunctions?';
-    		var params='fun_name:"'+this.editFrom.fun_name+'",';
-    		params+='fun_type:"'+this.editFrom.fun_type+'",';
-    		params+='fun_path:"'+this.editFrom.fun_path+'"';
-    		params='{'+params+'}';
-    		axios.get(url+params,{}).then(function(response){
-    			console.log(response);
-    		}).catch(function(error){
-    			console.log(error);
+    		if(dialogType==0){//新增
+    		var url=Cms.ip+'/rms/rmsService/addFunctions';
+    		var params={
+    			fun_name:this.editFrom.fun_name,
+    			fun_type:this.editFrom.fun_type,
+    			fun_path:this.editFrom.fun_path
+    		};
+    		params=JSON.stringify(params);
+    		var that=this;
+    		Cms.axios(url+'?'+params,{},function(response){
+    			if(response.status==200){
+    				that.funList.unshift(response.data);
+    			}
     		});
+    	}
+    	else if(dialogType==1)//提交修改
+    	{
+    		var params={
+    			fun_id:this.funList[infoIdx].fun_id,
+    			fun_name:this.editFrom.fun_name,
+    			fun_type:this.editFrom.fun_type,
+    			fun_path:this.editFrom.fun_path
+    		};
+    		params=JSON.stringify(params);
+    		var that=this;
+    		var url=Cms.ip+'/rms/rmsService/updateFunctions';
+    		Cms.axios(url+'?'+params,{},function(response){
+    		    if(response.status==200){
+    		    	that.funList[that.infoIdx].fun_name=params.fun_name;
+    		    	that.funList[that.infoIdx].fun_type=params.fun_type;
+    		    	that.funList[that.infoIdx].fun_path=params.fun_path;
+    		    }
+    		});
+    	}
     		this.dialogFormVisible=false;
     	},
     	getfunList(){
-    		var This=this;
+    		var that=this;
     		var url=Cms.ip+'/rms/rmsService/queryFunctions';
     		axios.get(url,{}).then(function(response){
     			if(response.status==200){
     				console.log(response);
     				let funs=response.data;
     				for(let i=0;i<funs.length;i++){
-    					This.funList.push(funs[i]);
+    					that.funList.push(funs[i]);
     				}
     			}
     		}).catch(function(error){
