@@ -65,22 +65,17 @@
 	import Cms from '../../base-config'
 
   export default {
-    name:'activePublic',
+    name:'roleList',
     data() {
       return {
-        showDialog : {
-          dialogVisible : false,
-          title : '',
-          content : '',
-          callBack : function(){}
-        },
+        showDialog:{},
       	infoIdx : 0, //第几条数据索引
       	dialogType :0, //对话框类型，0：新增，1：编辑
       	dialogTitle : '',
       	dialogTableVisible: false,
         dialogFormVisible: false,
         formLabelWidth: '120px',
-        roleList: [],
+        roleList: [{'role_id':1}],
         editFrom: {}
       }
     },
@@ -107,8 +102,8 @@
           'role_description' : data[idx].role_description
         }
       },
-      del(idx){
-        this.showDialog = {//显示删除提示框
+      del(idx){ 
+          this.showDialog = {//显示删除提示框
           dialogVisible : true,
           title : '提示',
           content : '确定要删除吗？',
@@ -126,6 +121,7 @@
             });
           }
         }
+
       },
       submit(dialogType){ //提交
         var This = this;
