@@ -57,7 +57,7 @@
   export default {
     name:'roleList',
     data() {
-      return {
+      return { 
         showDialog:{},
       	infoIdx : 0, //第几条数据索引
       	dialogType :0, //对话框类型，0：新增，1：编辑
