@@ -1,6 +1,8 @@
 import axios from 'axios'
 export default{
-	ip : 'http://172.254.48.40:8081',
+	ip : 'http://172.254.48.40:8081',   
+	// api: http://172.253.40.135:8080/
+	// service:  http://172.253.40.249:8081/rms/role/addRole
 	axios : function(url,params,callBack,method){
 		var param = '';
 		var hasProp = false;  
