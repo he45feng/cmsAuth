@@ -48,7 +48,7 @@
   .choose-fun{
   	max-height: 500px;
   	overflow-y: scroll;
-  }
+  } 
 </style>
 <script>
   import Dialog from '../../components/Dialog'

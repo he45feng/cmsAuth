@@ -9,8 +9,14 @@
     </el-dialog>
   </div>
 </template>
+
 <script>
   	export default {
+       data () {
+      return {
+        radio: '1'
+      };
+    },
       props:{
         showDialog : {
           type : Object
