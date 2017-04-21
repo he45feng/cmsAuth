@@ -142,6 +142,7 @@
             <el-carousel height="465px">
               <el-carousel-item>
                 <img src="./images/banner1.png" alt="">
+                <div class="text">这是一张图片</div>
               </el-carousel-item>
               <el-carousel-item>
                 <img src="./images/banner2.png" alt="">
@@ -166,28 +167,28 @@
               <div style="padding:20px 0;">
                 <ul class="ver-newsUl">
                   <li>
-                    <div class="new-head">2017财务数据简报</div>
-                    <div class="new-body">哈哈哈哈</div>
+                    <div class="new-head">2017年2月经纪业务异地监管信息简报</div>
+                    <div class="new-body">法律合规部</div>
+                    <div class="new-foot">2017-04-20</div>
+                  </li>
+                  <li>
+                    <div class="new-head">法律法规准则追踪动态简报</div>
+                    <div class="new-body">法律合规部</div>
+                    <div class="new-foot">2017-04-20</div>
+                  </li>
+                  <li>
+                    <div class="new-head">《风险控制月度简报》2012年1月总第93期</div>
+                    <div class="new-body">法律合规部</div>
+                    <div class="new-foot">2017-04-20</div>
+                  </li>
+                  <li>
+                    <div class="new-head">月度经营简报2017年2月份总第208期</div>
+                    <div class="new-body">法律合规部</div>
                     <div class="new-foot">2017-04-20</div>
                   </li>
                   <li>
                     <div class="new-head">第五届董事会</div>
-                    <div class="new-body">哈哈哈哈</div>
-                    <div class="new-foot">2017-04-20</div>
-                  </li>
-                  <li>
-                    <div class="new-head">第五届董事会</div>
-                    <div class="new-body">哈哈哈哈</div>
-                    <div class="new-foot">2017-04-20</div>
-                  </li>
-                  <li>
-                    <div class="new-head">第五届董事会</div>
-                    <div class="new-body">哈哈哈哈</div>
-                    <div class="new-foot">2017-04-20</div>
-                  </li>
-                  <li>
-                    <div class="new-head">第五届董事会</div>
-                    <div class="new-body">哈哈哈哈</div>
+                    <div class="new-body">法律合规部</div>
                     <div class="new-foot">2017-04-20</div>
                   </li>
                 </ul>
@@ -238,7 +239,7 @@
                         <div>合规风险事件</div>
                       </div>
                     </div>
-                    <div>
+                    <div class="tbBox">
                       <el-table
                         :data="tableData"
                         style="width: 100%">
@@ -456,6 +457,14 @@
             name: '王小虎',
             address: '上海市普陀区金沙江路 1519 弄'
           }, {
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄'
+          }, {
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄'
+          }, {
             date: '2016-05-03',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1516 弄'
@@ -533,6 +542,13 @@
     display: block;
     height: 465px;
   }
+  .el-carousel__item .text{
+    position: absolute;
+    top:100px;
+    left: 50px;
+    font-size: 30px;
+    color: #fff;
+  }
   #workApply .part-body>.el-menu{
     background-color: #fff;
   }
@@ -562,6 +578,9 @@
   }
   .kpiItem .kpiScore{
     font-size: 36px;
+  }
+  #KPI .tbBox{
+    margin-top: 40px;
   }
   .sellBox{
     margin-top: 24px;
