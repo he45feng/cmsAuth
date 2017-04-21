@@ -1,14 +1,14 @@
 <template>
   <div id="app">
 	  <div id="header" class="clearfix">
-	  	<div class="logoBox f-l"><img src="./images/logo-bg.png" alt=""></div>
+	  	<div class="logoBox f-l">
+        <img src="./images/logo600x600.png" alt="招商证券|合规门户">
+        <div class="logoText">招商证券|合规门户</div>
+      </div>
       <div class="controlBox f-r clearfix">
         <div class="userBox">
-          <!-- <div class="user-default-bg">
-            <span class="userMsg-count">3</span>
-          </div> -->
-          <el-badge :value="3" :max="99" class="item user-default-bg">
-            <el-button size="small"></el-button>
+          <el-badge :value="3" :max="99" class="item">
+            <el-button size="small" class="user-default-bt"></el-button>
           </el-badge>
           <span id="userName">张三</span>
         </div>
@@ -48,17 +48,25 @@
 	  <div>
 	  	<router-view></router-view>
 	  </div>
+    <el-dialog title="提示" v-model="dialogVisible" size="tiny">
+      <span>这是一段信息</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import 'common/css/reset.css';
+  import 'common/css/reset2.css';
 	export default {
   	name: 'app',
   	data(){
   		return{
   			mainSea : '',
   			navAcIndex1 : '1',
+        dialogVisible:false,
         mainNavData: [{
             id:1,
             label: '角色管理',
@@ -96,6 +104,7 @@
       },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
+        this.dialogVisible=true;
       }
   	}
 	}
@@ -116,13 +125,41 @@
   .f-r{
     float: right;
   }
+  body{
+    background-color: #eff3f5;
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    font-size: 14px;
+    color:#1f2d3d;
+  }
+
+  .el-menu{
+    background-color: #fff;
+  }
   #header{
     background-color: #eff3f5;
+    padding: 8px 0;
+  }
+  .logoBox{
+    margin-left: 20px;
   }
   .logoBox>img{
-    width: 300px;
-    height: 90px;
-    display: block;
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+  .logoBox>.logoText{
+    height: 50px;
+    line-height: 50px;
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: 24px;
+    color:#d4ad67;
+  }
+  .userBox>.el-badge{
+    vertical-align: bottom;
   }
   .user-default-bg{
     width: 30px;
@@ -130,6 +167,14 @@
     background: url(./images/user-default-bg.png) no-repeat;
     position: relative;
     display: inline-block;
+  }
+  .user-default-bt{
+    width: 30px;
+    height: 30px;
+    background: url(./images/user-default-bg.png) no-repeat;
+    position: relative;
+    display: inline-block;
+    border:0;
   }
   .userMsg-count{
     width: 18px;
@@ -145,11 +190,12 @@
   }
   .mainSeaBox{
     margin-right: 34px;
-    margin-top:32px;
+    margin-top: 10px;
+    width: 400px;
   }
   .controlBox{
     margin-right: 30px;
-    margin-top:32px;
+    margin-top: 10px;
   }
   .controlBox>div{
     display: inline-block;
