@@ -23,6 +23,7 @@
     "clean-webpack-plugin": "^0.1.13",
     "connect-history-api-fallback": "^1.1.0",
     "css-loader": "^0.25.0",
+    "element-theme": "^0.7.1",
     "element-ui": "^1.2.8",
     "eventsource-polyfill": "^0.9.6",
     "express": "^4.13.3",
