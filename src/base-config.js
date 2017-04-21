@@ -1,6 +1,6 @@
 import axios from 'axios'
 export default{
-	ip : 'http://172.254.48.40:8081',   
+	ip : 'http://172.253.40.249:8081',   
 	// api: http://172.253.40.135:8080/
 	// service:  http://172.253.40.249:8081/rms/role/addRole
 	axios : function(url,params,callBack,method){
@@ -25,6 +25,11 @@ export default{
 			//params : params,微服务参数放在了url后
 			timeout: 10000,
 			responseType: 'json',
+			headers:{
+				"AUTH_TOKEN" : "123456789"
+				//'X-Requested-With': 'XMLHttpRequest'
+			},
+			withCredentials: true,
 			transformRequest : function(request){
 				//alert('request');
 			},
@@ -32,7 +37,7 @@ export default{
 				var result = {
 					status : status,
 					data : response
-				}
+				};
 				console.log(result);
 				callBack(result);
 			},

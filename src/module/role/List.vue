@@ -2,7 +2,7 @@
   <div> 
     <el-button type="primary" icon="plus"  @click="addRole">新增</el-button>
 
-    <el-table :data="roleList" border style="width: 100%" class="umar-t10">
+    <el-table v-loading="loading" element-loading-text="拼命加载中" :data="roleList" border style="width: 100%" class="umar-t10">
       <el-table-column prop="role_id" label="角色ID" width="80"></el-table-column>
       <el-table-column prop="role_name" label="角色名称" width="120"></el-table-column>
       <el-table-column prop="created_user_account" label="创建人账号" width="120"></el-table-column>
@@ -44,12 +44,11 @@
 
   </div>
 </template>
+
 <style>
-  .choose-fun{
-  	max-height: 500px;
-  	overflow-y: scroll;
-  } 
+
 </style>
+
 <script>
   import Dialog from '../../components/Dialog'
 	import Cms from '../../base-config'
@@ -58,6 +57,7 @@
     name:'roleList',
     data() {
       return { 
+        loading: false,
         showDialog:{},
       	infoIdx : 0, //第几条数据索引
       	dialogType :0, //对话框类型，0：新增，1：编辑
@@ -92,7 +92,7 @@
           'role_description' : data[idx].role_description
         }
       },
-      del(idx){ 
+      del(idx){
           var This = this;
           This.showDialog = {//显示删除提示框
           dialogVisible : true,
@@ -106,6 +106,11 @@
                   if(response.status == 200){
                       This.roleList.splice(idx,1);
                       This.showDialog.dialogVisible = false;
+                  }else{
+                    this.$notify({
+                      title: '提示',
+                      message: '抱歉，出错了！'
+                    });
                   }
             });
           }
@@ -119,7 +124,8 @@
             alert("请输入分类名称");
             return;
         }
-       
+        This.dialogFormVisible = false;
+        This.loading = true;
       	if(dialogType==0){ //提交新增角色分类
           var params = {
             'role_name' : This.editFrom.role_name,
@@ -132,9 +138,14 @@
               'role_name' : This.editFrom.role_name,
               'role_description':This.editFrom.role_description
             },function(response){
+              This.loading = false;
               if(response.status == 200){
                 This.roleList.unshift(response.data);
-                This.dialogFormVisible = false;
+              }else{
+                this.$notify({
+                  title: '提示',
+                  message: '抱歉，出错了！'
+                });
               }
           });
       	}else if(dialogType==1){ //提交修改角色
@@ -145,11 +156,16 @@
               'role_name' : This.editFrom.role_name,
               'role_description':This.editFrom.role_description
             },function(response){
+              This.loading = false;
               if(response.status == 200){
                 //console.log(response);
-                This.roleList[This.infoIdx].role_name = This.editFrom.role_name,
-                This.roleList[This.infoIdx].role_description = This.editFrom.role_description,
-                This.dialogFormVisible = false;
+                This.roleList[This.infoIdx].role_name = This.editFrom.role_name;
+                This.roleList[This.infoIdx].role_description = This.editFrom.role_description;
+              }else{
+                this.$notify({
+                  title: '提示',
+                  message: '抱歉，出错了！'
+                });
               }
           });
       	}
@@ -164,7 +180,12 @@
               for(let i=0; i<roles.length;i++){
                 This.roleList.push(roles[i]); 
               }
-            }
+            }else{
+                this.$notify({
+                  title: '提示',
+                  message: '抱歉，出错了！'
+                });
+              }
           })
     		}
     }
