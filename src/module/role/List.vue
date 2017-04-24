@@ -56,7 +56,8 @@
   export default {
     name:'roleList',
     data() {
-      return { 
+
+      return {
         loading: false,
         showDialog:{},
       	infoIdx : 0, //第几条数据索引
