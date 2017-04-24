@@ -520,6 +520,9 @@
     padding: 0 20px;
   }
   /*----------content-----------*/
+  .el-carousel{
+    overflow: hidden;
+  }
   .pagePad{
     padding:10px 20px;
   }
@@ -541,6 +544,9 @@
   .bannerBox img{
     display: block;
     height: 465px;
+    border:0;
+    margin:0;
+    padding: 0;
   }
   .el-carousel__item .text{
     position: absolute;
