@@ -36,7 +36,7 @@
             <el-menu-item index="2-2">选项2</el-menu-item>
             <el-menu-item index="2-3">选项3</el-menu-item>
           </el-submenu>
-          <el-menu-item index="3"><a href="https://www.ele.me" target="_blank"><i class="el-icon-message"></i>专项监控</a></el-menu-item>
+          <el-menu-item index="3"><i class="el-icon-message"></i>专项监控</el-menu-item>
           <el-menu-item index="4"><i class="el-icon-message"></i>合规事务管理</el-menu-item>
           <el-menu-item index="5"><i class="el-icon-message"></i>合规监控统计</el-menu-item>
           <el-menu-item index="6"><i class="el-icon-message"></i>法规知识库</el-menu-item>
@@ -96,15 +96,19 @@
     },
   	methods:{
   		exit(){
-        window.localStolage["isLogin"]="";
-        location.href="module/login.html";
+        window.localStorage["isLogin"]="";
+        location.href="login.html";
       },
       mainSeaClick(){
         
       },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
-        this.dialogVisible=true;
+        if(key=='7'){
+          location.href="entry.html";
+        }else{
+          this.dialogVisible=true;
+        }
       }
   	}
 	}
