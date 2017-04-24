@@ -1,19 +1,19 @@
 <template>
   <div>
     
-    <el-button type="primary" icon="plus"  @click="dialogFormVisible = true">新增</el-button>
+    <el-button type="primary" icon="plus"  @click="add()">新增</el-button>
 
     <el-table :data="tableData" border style="width: 100%" class="umar-t10">
       <el-table-column fixed prop="name" label="名称" width="150"></el-table-column>
       <el-table-column prop="group" label="所属群组" width="120"></el-table-column>
-      <el-table-column prop="admin" label="创建人" width="120"></el-table-column>
-      <el-table-column prop="note" label="备注" width="300"></el-table-column>
+      <el-table-column prop="create_user_name" label="创建人" width="120"></el-table-column>
+      <el-table-column prop="fun_grp_description" label="备注" width="300"></el-table-column>
       <el-table-column prop="date" label="创建日期" width="120"></el-table-column>
       <el-table-column fixed="right" label="操作">
-      <template prop="id" scope="scope">
+      <template prop="fun_grp_id" scope="scope">
         <el-button  @click.native.prevent="edit(scope.$index, tableData)" type="text" size="small">编辑</el-button>
-        <el-button  @click.native.prevent="del(scope.$index, tableData)" type="text" size="small">查看</el-button>
-        <el-button  @click.native.prevent="del(scope.$index, tableData)" type="text" size="small">删除</el-button>
+        <el-button  @click.native.prevent="ShowDelDialog(scope.$index, tableData)" type="text" size="small">查看</el-button>
+        <el-button  @click.native.prevent="ShowDelDialog(scope.$index, tableData)" type="text" size="small">删除</el-button>
       </template>
       </el-table-column>
     </el-table>
@@ -22,7 +22,7 @@
     <el-dialog title="新增功能分类" size="large" v-model="dialogFormVisible">
       <el-form :model="form">
         <el-form-item label="名称：" :label-width="formLabelWidth">
-          <el-input v-model="form.name" auto-complete="off"></el-input>
+          <el-input v-model="form.fun_grp_name" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="功能：" :label-width="formLabelWidth">
           <el-tree 
@@ -40,7 +40,7 @@
 			  type="textarea"
 			  :rows="2"
 			  placeholder="请输入内容"
-			  v-model="note">
+			  v-model="form.fun_grp_descrition">
 			</el-input>
     	</el-form-item>
       </el-form>
@@ -55,7 +55,7 @@
       <span>确定要删除吗？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="del()">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -68,17 +68,12 @@
   }
 </style>
 <script>
+  import Cms from '../../base-config.js'
   export default {
     name:'activePublic',
     data() {
       return {
         tableData: [{
-          id:'1',
-          date: '2016-05-03',
-          name: '邮件服务',
-          admin : '张小明',
-          group : "总裁办",
-          note : '总裁办所有人都有权限'
         }],
         dialogTableVisible: false,
         dialogFormVisible: false,
@@ -92,6 +87,8 @@
           resource: '',
           desc: ''
         },
+        dialogType:0,
+        indexidx:0,
         formLabelWidth: '120px',
         dialogVisible:false,
         note:'',
@@ -109,21 +106,80 @@
         count: 1
       }
     },
+    mounted(){
+      this.getFunctionsGrpList();
+    },
     methods: {
+      add(){
+        this.dialogType=0;
+        this.dialogFormVisible=true;
+      },
       edit(idx,data){
+        this.dialogType=1;
+        this.indexidx=idx;
         this.dialogFormVisible = true;
         this.form={
           name : data[idx].name
         }
       },
-      del(idx){
+      ShowDelDialog(idx,data){
+        this.indexidx=idx;
         this.dialogVisible = true;
-        //this.tableData.splice(idx,1);
+      },
+      del(){
+        var url=Cms.ip+'/rms/rmsService/deleteFunctionsGroup';
+        var param={fun_grp_id:this.tableData[this.indexidx].fun_grp_id};
+        let that=this;
+        Cms.axios(url+'?'+JSON.stringify(param),{},function(res){
+          if(res.status==200){
+            that.tableData.splice(that.indexidx,1);
+          }
+        });
       },
       submit(){
-        alert(11);
-      },
+        if(this.dialogType==0){
+          var url=Cms.ip+'/rms/rmsService/addFunctionsGroup';
+          var param={
+            fun_grp_name:this.form.fun_grp_name,
+            fun_grp_descrition:this.form.fun_grp_descrition
+          };
+          var that=this;
+          Cms.axios(url+'?'+JSON.stringify(param),{},function(res){
+            if(res.status==200){
+              that.tableData.unshift(res.data);
+            }
+          });
+          this.dialogFormVisible=false;
+        }
+        else if(this.dialogType==1){
+          var url=Cms.ip+'/rms/rmsService/updateFunctionsGroup';
+          var param={
+            fun_grp_id:this.tableData[this.indexidx].fun_grp_id,
+            fun_grp_name:this.form.fun_grp_name,
+            fun_grp_descritio:this.form.fun_grp_descrition
+          }
+          var that=this;
+          Cms.axios(url+'?'+JSON.stringify(param),{},function(res){
+            if(res.status==200){
+              that.tableData[that.indexidx].fun_grp_name=param.fun_grp_name;
+              that.tableData[that.indexidx].fun_grp_descrition=param.fun_grp_descrition;
+            }
+          });
 
+        }
+      },
+      getFunctionsGrpList(){
+        var that=this;
+        var url=Cms.ip+'/rms/rmsService/queryFunctionsGroup';
+        Cms.axios(url,{},function(response){
+              if(response.status==200){
+                let fungrps=response.data;
+                for(let i=0;i<fungrps.length;i++){
+                  that.tableData.push(fungrps[i]);
+                }
+              }
+            });
+      },
       //功能选择开始
       handleCheckChange(data, checked, indeterminate) {
         console.log(data, checked, indeterminate);

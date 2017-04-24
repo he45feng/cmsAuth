@@ -1,6 +1,7 @@
+
 <template>
   <div>
-   <el-button type="primary" icon="plus"  @click="dialogFormVisible = true">新增</el-button>
+   <el-button type="primary" icon="plus"  @click="addfun()">新增</el-button>
     <el-table :data="funList" border style="width: 100%" class="umar-t10">
       <el-table-column prop="fun_id" label="功能ID" width="80"></el-table-column>
       <el-table-column prop="fun_name" label="功能名称" width="120"></el-table-column>
@@ -109,9 +110,8 @@ import Cms from '../../base-config.js'
     		let funid =data[this.infoidx].fun_id;
     		var url=Cms.ip+'/rms/rmsService/deleteFunctions';
     		var params={fun_id:funid};
-    		params=JSON.stringify(params);
-    		var that=this;
-    		Cms.axios(url+'?'+params,{},function(response){
+        var that=this;
+    		Cms.axios(url+'?'+JSON.stringify(params),{},function(response){
     			if(response.status==200){
 					that.funList.splice(that.infoidx,1);
     			}
@@ -119,33 +119,31 @@ import Cms from '../../base-config.js'
     		this.dialogVisible=false;
     	},
     	submit(){
-    		if(dialogType==0){//新增
+    		if(this.dialogType==0){//新增
     		var url=Cms.ip+'/rms/rmsService/addFunctions';
     		var params={
     			fun_name:this.editFrom.fun_name,
     			fun_type:this.editFrom.fun_type,
     			fun_path:this.editFrom.fun_path
     		};
-    		params=JSON.stringify(params);
-    		var that=this;
-    		Cms.axios(url+'?'+params,{},function(response){
+        var that=this;
+    		Cms.axios(url+'?'+JSON.stringify(params),{},function(response){
     			if(response.status==200){
     				that.funList.unshift(response.data);
     			}
     		});
     	}
-    	else if(dialogType==1)//提交修改
+    	else if(this.dialogType==1)//提交修改
     	{
     		var params={
-    			fun_id:this.funList[infoIdx].fun_id,
+    			fun_id:this.funList[this.infoIdx].fun_id,
     			fun_name:this.editFrom.fun_name,
     			fun_type:this.editFrom.fun_type,
     			fun_path:this.editFrom.fun_path
     		};
-    		params=JSON.stringify(params);
-    		var that=this;
     		var url=Cms.ip+'/rms/rmsService/updateFunctions';
-    		Cms.axios(url+'?'+params,{},function(response){
+    		var that=this;
+        Cms.axios(url+'?'+JSON.stringify(params),{},function(response){
     		    if(response.status==200){
     		    	that.funList[that.infoIdx].fun_name=params.fun_name;
     		    	that.funList[that.infoIdx].fun_type=params.fun_type;
@@ -158,17 +156,15 @@ import Cms from '../../base-config.js'
     	getfunList(){
     		var that=this;
     		var url=Cms.ip+'/rms/rmsService/queryFunctions';
-    		axios.get(url,{}).then(function(response){
-    			if(response.status==200){
-    				console.log(response);
-    				let funs=response.data;
-    				for(let i=0;i<funs.length;i++){
-    					that.funList.push(funs[i]);
-    				}
-    			}
-    		}).catch(function(error){
-    			console.log(error);
-    		});
+    		Cms.axios(url,{},function(response){
+              if(response.status==200){
+                let funs=response.data;
+                for(let i=0;i<funs.length;i++){
+                  that.funList.push(funs[i]);
+                }
+              }
+
+        });
     	}
     }
   }

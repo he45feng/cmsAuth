@@ -1,6 +1,6 @@
 import axios from 'axios'
 export default{
-	ip : 'http://172.254.48.40:8081',
+	ip : 'http://172.254.48.2:8081',
 	axios : function(url,params,callBack,method){
 		var param = '';
 		var hasProp = false;  
