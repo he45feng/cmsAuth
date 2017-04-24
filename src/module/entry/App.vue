@@ -5,7 +5,7 @@
     <el-row>
         <el-col :span="22">
           <el-menu default-active="5" class="el-menu-demo" mode="horizontal" @select="">
-            <el-menu-item index="1">招商证券</el-menu-item>
+            <el-menu-item index="1" @click="gotoHome">首页</el-menu-item>
           </el-menu>
         </el-col>
         <el-col :span="2">
@@ -46,7 +46,6 @@
 
 import Vue from 'vue'
 import Element from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
 
 Vue.use(Element)
 
@@ -87,6 +86,9 @@ export default {
     this.$router.push('/rolelist');
   },
   methods: {
+    gotoHome(){
+      window.open("home.html");
+    },
     handleNodeClick(data) {
       console.log(data);
       if(data.$treeNodeId==2){

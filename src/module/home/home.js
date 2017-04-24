@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Element from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
+import '../../../theme/index.css'
 import VueRouter from 'vue-router'
 import routeConfig from '../../router-config'
 import App from './App'
