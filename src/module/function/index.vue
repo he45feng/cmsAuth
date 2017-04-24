@@ -4,11 +4,11 @@
     <el-button type="primary" icon="plus"  @click="add()">新增</el-button>
 
     <el-table :data="tableData" border style="width: 100%" class="umar-t10">
-      <el-table-column fixed prop="name" label="名称" width="150"></el-table-column>
-      <el-table-column prop="group" label="所属群组" width="120"></el-table-column>
+      <el-table-column fixed prop="fun_grp_name" label="名称" width="150"></el-table-column>
+      
       <el-table-column prop="create_user_name" label="创建人" width="120"></el-table-column>
       <el-table-column prop="fun_grp_description" label="备注" width="300"></el-table-column>
-      <el-table-column prop="date" label="创建日期" width="120"></el-table-column>
+      <el-table-column prop="create_date" label="创建日期" width="120"></el-table-column>
       <el-table-column fixed="right" label="操作">
       <template prop="fun_grp_id" scope="scope">
         <el-button  @click.native.prevent="edit(scope.$index, tableData)" type="text" size="small">编辑</el-button>
