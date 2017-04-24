@@ -56,7 +56,8 @@
   export default {
     name:'roleList',
     data() {
-      return { 
+
+      return {
         loading: false,
         showDialog:{},
       	infoIdx : 0, //第几条数据索引
@@ -107,7 +108,7 @@
                       This.roleList.splice(idx,1);
                       This.showDialog.dialogVisible = false;
                   }else{
-                    this.$notify({
+                    This.$notify.error({
                       title: '提示',
                       message: '抱歉，出错了！'
                     });
@@ -142,7 +143,7 @@
               if(response.status == 200){
                 This.roleList.unshift(response.data);
               }else{
-                this.$notify({
+                This.$notify.error({
                   title: '提示',
                   message: '抱歉，出错了！'
                 });
@@ -162,7 +163,7 @@
                 This.roleList[This.infoIdx].role_name = This.editFrom.role_name;
                 This.roleList[This.infoIdx].role_description = This.editFrom.role_description;
               }else{
-                this.$notify({
+                This.$notify.error({
                   title: '提示',
                   message: '抱歉，出错了！'
                 });
@@ -181,7 +182,7 @@
                 This.roleList.push(roles[i]); 
               }
             }else{
-                this.$notify({
+                This.$notify.error({
                   title: '提示',
                   message: '抱歉，出错了！'
                 });
