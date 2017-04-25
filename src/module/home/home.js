@@ -4,6 +4,7 @@ import '../../../theme/index.css'
 import VueRouter from 'vue-router'
 import routeConfig from '../../router-config'
 import App from './App'
+import MyComponents from '../index'
 
 Vue.use(Element)
 Vue.use(VueRouter)
