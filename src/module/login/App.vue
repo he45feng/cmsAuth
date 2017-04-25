@@ -36,7 +36,7 @@
     	methods:{
     		submit(){
     			window.localStorage['isLogin'] = 'login';
-    			location.href = "entry.html";
+    			location.href = "home.html";
     		}
     	}
   	}
