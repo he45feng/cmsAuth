@@ -62,7 +62,7 @@ export default {
             label: '角色分类'
           },{
             id:3,
-            label: '角色列表'
+            label: '联系人'
           }]
         },{
           id:4,
@@ -83,7 +83,7 @@ export default {
       };
     },
   created: function(){
-    this.$router.push('/rolelist');
+    this.$router.push('/member');
   },
   methods: {
     gotoHome(){
@@ -93,6 +93,8 @@ export default {
       console.log(data);
       if(data.$treeNodeId==2){
         this.$router.push('/rolelist');
+      }else if(data.$treeNodeId==3){
+        this.$router.push('/member');
       }else if(data.$treeNodeId==5){
         this.$router.push('/fun');
       }else if(data.$treeNodeId==6){
