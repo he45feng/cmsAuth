@@ -165,7 +165,7 @@
             </div>
             <div class="part-body">
               <div style="padding:20px 0;">
-                <ul class="ver-newsUl">
+                <!-- <ul class="vertical-news">
                   <li>
                     <div class="new-head">2017年2月经纪业务异地监管信息简报</div>
                     <div class="new-body">法律合规部</div>
@@ -191,7 +191,14 @@
                     <div class="new-body">法律合规部</div>
                     <div class="new-foot">2017-04-20</div>
                   </li>
-                </ul>
+                </ul> -->
+                <vertical-news v-for="item in msgNotice">
+                  <new-item>
+                    <new-head>{{item.head}}</new-head>
+                    <new-body>{{item.body}}</new-body>
+                    <new-foot>{{item.foot}}</new-foot>
+                  </new-item>
+                </vertical-news>
               </div>
             </div>
           </div>
@@ -341,7 +348,7 @@
                       <el-tabs v-model="activeName" @tab-click="handleClick">
                         <el-tab-pane label="全部" name="first">
                           <div>
-                            <ul class="hori-newsUl">
+                            <ul class="horizontal-news">
                               <li>
                                 <div class="f-r new-right">最新</div>
                                 <div class="f-r new-mid">2017-04-12</div>
@@ -389,7 +396,7 @@
                     <el-tabs v-model="activeName2" @tab-click="handleClick">
                       <el-tab-pane label="培训信息" name="trainMsg">
                         <div>
-                          <ul class="hori-newsUl">
+                          <ul class="horizontal-news">
                             <li>
                               <div class="f-r new-right">最新</div>
                               <div class="f-r new-mid">2017-04-12</div>
@@ -469,6 +476,33 @@
             name: '王小虎',
             address: '上海市普陀区金沙江路 1516 弄'
           }],
+        msgNotice:[
+          {
+            head:"2017年2月经纪业务异地监管信息简报",
+            body:"法律合规部",
+            foot:"2017-04-20"
+          },
+          {
+            head:"法律法规准则追踪动态简报",
+            body:"法律合规部",
+            foot:"2017-04-20"
+          },
+          {
+            head:"《风险控制月度简报》2012年1月总第93期",
+            body:"法律合规部",
+            foot:"2017-04-20"
+          },
+          {
+            head:"月度经营简报2017年2月份总第208期",
+            body:"法律合规部",
+            foot:"2017-04-20"
+          },
+          {
+            head:"第五届董事会",
+            body:"法律合规部",
+            foot:"2017-04-20"
+          }
+        ],
         activeName:"first",
         activeName2:"trainMsg",
         sellSea:""
@@ -484,6 +518,15 @@
       },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
+      },
+      handleOpen(){
+
+      },
+      handleClose(){
+
+      },
+      handleClick(){
+
       }
   	}
 	}
@@ -667,39 +710,39 @@
   .monthDate .dateBox .dateState{
     line-height: 20px;
   }
-  .ver-newsUl>li{
+  .vertical-news>li{
     padding:5px 0;
   }
-  .ver-newsUl .new-head{
+  .vertical-news .new-head{
     line-height: 22px;
     font-weight: bold;
   }
-  .ver-newsUl .new-body{
+  .vertical-news .new-body{
     line-height: 16px;
     color:#666;
   }
-  .ver-newsUl .new-foot{
+  .vertical-news .new-foot{
     line-height: 22px;
     color:#666;
   }
-  .hori-newsUl>li{
+  .horizontal-news>li{
     height: 30px;
     line-height: 30px;
   }
-  .hori-newsUl .new-right{
+  .horizontal-news .new-right{
     width: 60px;
     min-height: 2px;
     text-align: center;
     color:#c00;
   }
-  .hori-newsUl .new-mid{
+  .horizontal-news .new-mid{
     width: 100px;
     text-align: center;
   }
-  .hori-newsUl .new-left{
+  .horizontal-news .new-left{
     margin-right: 180px;
   }
-  .hori-newsUl .text>div{
+  .horizontal-news .text>div{
     width: 100%;
   }
 </style>

@@ -8,7 +8,7 @@
       <div class="controlBox f-r clearfix">
         <div class="userBox">
           <el-badge :value="3" :max="99" class="item">
-            <el-button size="small" class="user-default-bt"></el-button>
+            <el-button class=""><i class="fa fa-user-circle" id="user-default-bt"></i></el-button>
           </el-badge>
           <span id="userName">张三</span>
         </div>
@@ -60,35 +60,14 @@
 
 <script>
   import 'common/css/reset2.css';
+  import 'common/css/font-awesome.min.css';
 	export default {
   	name: 'app',
   	data(){
   		return{
   			mainSea : '',
   			navAcIndex1 : '1',
-        dialogVisible:false,
-        mainNavData: [{
-            id:1,
-            label: '角色管理',
-            children: [{
-              id:2,
-              label: '角色分类'
-            },{
-              id:3,
-              label: '角色列表'
-            }]
-          },{
-            id:4,
-            label: '功能管理',
-            children:[{
-              id:5,
-              label:'功能分类'
-            },{
-              id:6,
-              label:'功能列表'            
-            }]
-          }
-        ]
+        dialogVisible:false
   		};
   	},
     mounted: function(){
@@ -100,7 +79,7 @@
         location.href="login.html";
       },
       mainSeaClick(){
-        
+        alert("ok");
       },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
@@ -165,20 +144,20 @@
   .userBox>.el-badge{
     vertical-align: bottom;
   }
-  .user-default-bg{
-    width: 30px;
-    height: 30px;
-    background: url(./images/user-default-bg.png) no-repeat;
-    position: relative;
-    display: inline-block;
+  .userBox .el-button{
+    padding: 0;
+    border: 0;
+    background:none;
   }
-  .user-default-bt{
-    width: 30px;
+  #user-default-bt{
+    /*width: 30px;
     height: 30px;
     background: url(./images/user-default-bg.png) no-repeat;
     position: relative;
     display: inline-block;
-    border:0;
+    border:0;*/
+    font-size: 28px;
+    cursor: pointer;
   }
   .userMsg-count{
     width: 18px;
@@ -199,7 +178,7 @@
   }
   .controlBox{
     margin-right: 30px;
-    margin-top: 10px;
+    margin-top: 14px;
   }
   .controlBox>div{
     display: inline-block;
@@ -207,7 +186,7 @@
   }
   #userName{
     font-size:16px;
-    margin-left:18px;
+    margin-left:10px;
   }
   .myControl>a{
     padding: 0 4px;
