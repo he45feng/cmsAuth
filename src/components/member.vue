@@ -1,8 +1,8 @@
+<!-- 组织架构人员选择 -->
 <template>
-
   <div> 
-    <el-row>
-      <el-col :span="6">
+    <el-row align="middle" justify="center" type="flex">
+      <el-col :span="7">
         <div class="max-h">
           <el-input
             placeholder="输入关键字进行过滤"
@@ -10,9 +10,9 @@
           </el-input>
 
           <el-tree
-            height="250"
+            height="350"
             highlight-current="true"
-            node-key="orgid"
+            node-key="rowindex"
             :default-expanded-keys="[1]"
             :data="orgData"
             :props="defaultProps"
@@ -23,29 +23,18 @@
           </el-tree>
         </div>
       </el-col>
-      <el-col :span="16">
+      <el-col :span="10">
         <div class="">
           <el-table
             :data="userData"
             style="width: 100%"
+            height="350"
             @selection-change="handleSelectionChange">
             <el-table-column
-              prop="chsname"
-              label="姓名"
-              width="100">
-            </el-table-column>
-            <el-table-column
-              prop="mobilephone"
-              label="电话"
-              width="130">
-            </el-table-column>
-            <el-table-column
-              prop="position"
-              label="职位">
-            </el-table-column>
-            <el-table-column
-              prop="job"
-              label="岗位">
+              label="人员信息">
+                <template scope="scope">
+                    <b>{{ scope.row.chsname }}</b><span>({{scope.row.position}}-{{scope.row.job}})</span>
+                </template>
             </el-table-column>
             <el-table-column
               fixed="right"
@@ -55,13 +44,14 @@
           </el-table>
         </div>
       </el-col>
-    </el-row>
-    <el-row type="flex" justify="end">
-      <el-col :span="4" :offseet="10">
-          <el-button type="primary" @click="submitSelect">确定</el-button>
+      <el-col :span="7" class="max-h">
+        <span v-for="(users,key) in multipleSelection">
+          <span v-for="user in users">
+            <el-tag type="primary" :key="user.userid" :closable="true" style="margin:5px;" @close="closeTag(key,user.userid)">{{user.chsname}}</el-tag>
+          </span>
+        </span>
       </el-col>
     </el-row>
-
   </div>
 </template>
 
@@ -73,8 +63,8 @@
 </style>
 
 <script>
-  import Dialog from '../../components/Dialog'
-	import Cms from '../../base-config'
+  import Vue from 'vue'
+	import Cms from '../base-config'
 
   export default {
     name:'member',
@@ -85,10 +75,11 @@
         defaultProps: {
           children: 'children',
           label: 'orgname',
-          id: 'orgid'
+          id: 'rowindex'
         },
-        userData:[],
-        multipleSelection: []
+        userData:[], //人员信息
+        currentOrgid:'', //当前部门ID
+        multipleSelection: {} //选中的人员
       }
     },
     computed:{
@@ -136,16 +127,28 @@
           if(data.column6 == 12){
             return;
           }
+          this.currentOrgid = data.orgid;
           this.queryUser(data.orgid);
           console.log(data.orgid);
         },
-        handleSelectionChange(val) { //选择的人员
-          this.multipleSelection = val;
-          //console.log(val[0].chsname)
+        handleSelectionChange(val) { //选择人员
+          Vue.set(this.multipleSelection,this.currentOrgid, val);
+          console.log(this.multipleSelection);
+        },
+        closeTag(orgid,userid){ //删除选中的人员
+          //alert(orgid + "===" +userid);
+          var users = this.multipleSelection[orgid];
+          for(var i=0; i<users.length; i++){
+            if(users[i].userid == userid){
+              users.splice(i,1);
+            }
+          }
+          console.log(users);
         },
         submitSelect(){
           console.log(this.multipleSelection);
-          alert("提交选择的人员")
+          console.log("提交选择的人员");
+          this.$emit("submitSelect",this.multipleSelection);
         }
     },
     watch: {

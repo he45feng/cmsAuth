@@ -12,6 +12,7 @@
       <el-table-column fixed="right" label="操作">
       <template prop="id" scope="scope">
         <el-button  @click.native.prevent="edit(scope.$index, roleList)" type="text" size="small">编辑</el-button>
+        <el-button  @click.native.prevent="addOuth(scope.$index, roleList)" type="text" size="small">添加权限</el-button>
         <el-button  @click.native.prevent="del(scope.$index, roleList)" type="text" size="small">删除</el-button>
       </template>
       </el-table-column>
@@ -40,6 +41,16 @@
     </el-dialog>
 	<!--编辑、添加dialog结束-->
 
+  <!--添加权限dialog开始-->
+    <el-dialog title="选择人员" size="large" v-model="dialogMemberVisible">
+      <cms-member v-on:submitSelect="pushOuth"></cms-member>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogMemberVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitAuth()">确 定</el-button>
+      </div>
+    </el-dialog>
+  <!--添加权限dialog结束-->
+
   <cms-dialog :showDialog="showDialog"></cms-dialog>
 
   </div>
@@ -51,6 +62,7 @@
 
 <script>
   import Dialog from '../../components/Dialog'
+  import Member from '../../components/Member'
 	import Cms from '../../base-config'
 
   export default {
@@ -65,13 +77,15 @@
       	dialogTitle : '',
       	dialogTableVisible: false,
         dialogFormVisible: false,
+        dialogMemberVisible:false,
         formLabelWidth: '120px',
         roleList: [{'role_id':1}],
         editFrom: {}
       }
     },
     components:{
-      "cms-dialog":Dialog
+      "cms-dialog":Dialog,
+      "cms-member":Member
     },
     mounted(){
     	this.getRoleList();
@@ -116,7 +130,13 @@
             });
           }
         }
-
+      },
+      pushOuth(multipleSelection){ //将从Member组件传来的数据保存起来
+          console.log(multipleSelection);
+      },
+      addOuth(idx,data){ //添加权限
+        this.infoIdx = idx;
+        this.dialogMemberVisible = true;
       },
       submit(dialogType){ //提交
         var This = this;
