@@ -505,7 +505,8 @@
         ],
         activeName:"first",
         activeName2:"trainMsg",
-        sellSea:""
+        sellSea:"",
+        dateData:this.getMonthData()
   		}
   	},
   	methods:{
@@ -527,6 +528,11 @@
       },
       handleClick(){
 
+      },
+      getMonthData(){
+        var date=new Date();
+        var day=date.getDate();
+        console.log(day);
       }
   	}
 	}
