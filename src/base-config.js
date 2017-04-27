@@ -1,6 +1,6 @@
 import axios from 'axios'
 export default{
-	ip : 'http://172.254.48.7:8081', 
+	ip : 'http://172.253.40.249:8081', 
 	//ip : 'http://172.253.40.249:8081',   
 	// api: http://172.253.40.135:8080/
 	// service:  http://172.253.40.249:8081/rms/role/addRole
@@ -27,10 +27,8 @@ export default{
 			timeout: 10000,
 			responseType: 'json',
 			headers:{
-				//contentType: "application/x-www-form-urlencoded; charset=UTF-8"
-				//"AUTH_TOKEN" : "123456789"
-				//'X-Requested-With': 'XMLHttpRequest'
-				//"msg.debug" : "Y"
+				"msg.callback" : "",
+				"sys.sequence" : ""
 			},
 			//withCredentials: true,
 			transformRequest : function(request){

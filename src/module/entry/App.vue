@@ -83,7 +83,7 @@ export default {
       };
     },
   created: function(){
-    this.$router.push('/member');
+    this.$router.push('/rolelist');
   },
   methods: {
     gotoHome(){
