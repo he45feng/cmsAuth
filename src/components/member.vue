@@ -26,10 +26,12 @@
       <el-col :span="10">
         <div class="">
           <el-table
+            border
             :data="userData"
             style="width: 100%"
             height="350"
-            @selection-change="handleSelectionChange">
+            @selection-change="handleSelectionChange"
+            ref="orgTabe">
             <el-table-column
               label="人员信息">
                 <template scope="scope">
@@ -47,7 +49,7 @@
       <el-col :span="7" class="max-h">
         <span v-for="(users,key) in multipleSelection">
           <span v-for="user in users">
-            <el-tag type="primary" :key="user.userid" :closable="true" style="margin:5px;" @close="closeTag(key,user.userid)">{{user.chsname}}</el-tag>
+            <el-tag type="primary" :key="user.userid" close-transition="true" :closable="true" style="margin:5px;" @close="closeTag(key,user.userid)">{{user.chsname}}</el-tag>
           </span>
         </span>
       </el-col>
@@ -83,7 +85,7 @@
       }
     },
     computed:{
-
+      
     },
     mounted:function(){
       this.queryOrganization();
@@ -94,7 +96,7 @@
           var url = Cms.ip + '/rms/org/queryOrganization?"yanwb"';
           Cms.axios(url,{},function(response){
             if(response.status == 200){
-              console.log(response)
+              //console.log(response)
               This.orgData = response.data;
             }else{
                 This.$notify.error({
@@ -109,8 +111,20 @@
           var url = Cms.ip + '/rms/user/queryUser?"yanwb","'+ orgid +'"';
           Cms.axios(url,{},function(response){
             if(response.status == 200){
-              console.log(response);
               This.userData = response.data;
+
+              /**数据回显开始*/
+              var users = This.multipleSelection[orgid];
+              This.$nextTick(function(){
+                for(var i=0; i<response.data.length; i++){
+                  for(var j=0; j<users.length; j++){
+                    if(users[j].userid == response.data[i].userid){
+                      This.$refs.orgTabe.toggleRowSelection(This.userData[i],true);//回显
+                    }
+                  }
+                }
+              });
+              /**数据回显结束*/
             }else{
                 This.$notify.error({
                   title: '提示',
@@ -124,16 +138,16 @@
           return data.orgname.indexOf(value) !== -1;
         },
         handleNodeClick(data) { //选择组织
-          if(data.column6 == 12){
+          if(data.column6 == 12 || this.currentOrgid == data.orgid){
             return;
           }
           this.currentOrgid = data.orgid;
           this.queryUser(data.orgid);
-          console.log(data.orgid);
+          //console.log(data.orgid);
         },
         handleSelectionChange(val) { //选择人员
           Vue.set(this.multipleSelection,this.currentOrgid, val);
-          console.log(this.multipleSelection);
+          //console.log(this.multipleSelection);
         },
         closeTag(orgid,userid){ //删除选中的人员
           //alert(orgid + "===" +userid);
@@ -142,13 +156,18 @@
             if(users[i].userid == userid){
               users.splice(i,1);
             }
-          }
+          } 
           console.log(users);
         },
+        isSelect(row){
+
+          //console.log(row.userid);
+        },
         submitSelect(){
-          console.log(this.multipleSelection);
-          console.log("提交选择的人员");
-          this.$emit("submitSelect",this.multipleSelection);
+          
+          //console.log(this.multipleSelection);
+          //console.log("提交选择的人员");
+          //this.$emit("submitSelect",this.multipleSelection);
         }
     },
     watch: {
