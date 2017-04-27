@@ -75,8 +75,6 @@
 
 <script>
   import Dialog from '../../components/Dialog'
-  import Ul from '../../components/Ul'
-  import Li from '../../components/Li'
 	import Cms from '../../base-config'
 
   export default {
