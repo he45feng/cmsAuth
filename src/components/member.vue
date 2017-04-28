@@ -193,8 +193,9 @@
               if(users[0].hasOwnProperty('user')){//删除全选
                 var user = users[0].user;
                 for(var i=0; i<user.length; i++){
-                  this.$refs.orgTabe.toggleRowSelection(user[0],false)
+                  this.$refs.orgTabe.toggleRowSelection(user[0],false);
                 }
+                user.splice(0, user.length);
                 users.splice(0,1);
               }else{ //删除单个
                 for(var i=0; i<users.length; i++){
