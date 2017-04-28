@@ -30,10 +30,11 @@
             :data="userData"
             style="width: 100%"
             height="350"
-            @selection-change="handleSelectionChange"
+            @select="handleSelectionChange"
+            @select-all="handleSelectionAll"
             ref="orgTabe">
             <el-table-column
-              label="人员信息">
+              :label="currentOrgName">
                 <template scope="scope">
                     <b>{{ scope.row.chsname }}</b><span>({{scope.row.position}}-{{scope.row.job}})</span>
                 </template>
@@ -81,11 +82,12 @@
         },
         userData:[], //人员信息
         currentOrgid:'', //当前部门ID
+        currentOrgName:'招商证券',//当前部门名称
         multipleSelection: {} //选中的人员
       }
     },
     computed:{
-      
+
     },
     mounted:function(){
       this.queryOrganization();
@@ -141,13 +143,41 @@
           if(data.column6 == 12 || this.currentOrgid == data.orgid){
             return;
           }
+          this.currentOrgName = data.orgname;
           this.currentOrgid = data.orgid;
           this.queryUser(data.orgid);
           //console.log(data.orgid);
         },
-        handleSelectionChange(val) { //选择人员
-          Vue.set(this.multipleSelection,this.currentOrgid, val);
-          //console.log(this.multipleSelection);
+        handleSelectionChange(val) { //选择单个人员
+          if(this.userData.length == val.length){
+            var arr = [{
+              userid : this.orgid,
+              chsname : this.currentOrgName,
+              user : val
+            }];
+            Vue.set(this.multipleSelection,this.currentOrgid, arr);
+          }else{
+            try{
+              var users = this.multipleSelection[this.currentOrgid][0];
+              if(users.hasOwnProperty('user')){
+                delete this.multipleSelection[this.currentOrgid];
+              }
+            }catch(e){console.log(e)}
+            Vue.set(this.multipleSelection,this.currentOrgid, val);
+          }
+        },
+        handleSelectionAll(val){ //选择所有人员
+          if(val.length==0){
+            this.multipleSelection[this.currentOrgid] = '';
+          }else{
+            var arr = [{
+              userid : this.orgid,
+              chsname : this.currentOrgName,
+              user : val
+            }];
+            Vue.set(this.multipleSelection,this.currentOrgid, arr);
+            console.log(this.multipleSelection)
+          }
         },
         closeTag(orgid,userid){ //删除选中的人员
           //alert(orgid + "===" +userid);
