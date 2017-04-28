@@ -30,8 +30,7 @@
             :data="userData"
             style="width: 100%"
             height="350"
-            @select="handleSelectionChange"
-            @select-all="handleSelectionAll"
+            @selection-change="handleSelectionChange"
             ref="orgTabe">
             <el-table-column
               :label="currentOrgName">
@@ -156,7 +155,7 @@
           this.queryUser(data.orgid);
           //console.log(data.orgid);
         },
-        handleSelectionChange(val) { //选择单个人员
+        handleSelectionChange(val) { //选择人员
           if(this.userData.length == val.length){
             var arr = [{
               userid : this.orgid,
@@ -172,19 +171,6 @@
               }
             }catch(e){console.log(e)}
             Vue.set(this.multipleSelection,this.currentOrgid, val);
-          }
-        },
-        handleSelectionAll(val){ //选择所有人员
-          if(val.length==0){
-            this.multipleSelection[this.currentOrgid] = '';
-          }else{
-            var arr = [{
-              userid : this.orgid,
-              chsname : this.currentOrgName,
-              user : val
-            }];
-            Vue.set(this.multipleSelection,this.currentOrgid, arr);
-            console.log(this.multipleSelection)
           }
         },
         closeTag(orgid,userid){ //删除选中的人员
@@ -204,7 +190,13 @@
                   }
                 }
               }
-          }catch(e){console.log(e)}
+          }catch(e){  
+            for(var i=0; i<users.length; i++){
+              if(users[i].userid == userid){
+                users.splice(i,1);
+              }
+            }
+          }
           console.log(this.multipleSelection)
         },
         isSelect(row){
