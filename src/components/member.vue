@@ -118,13 +118,21 @@
               /**数据回显开始*/
               var users = This.multipleSelection[orgid];
               This.$nextTick(function(){
-                for(var i=0; i<response.data.length; i++){
-                  for(var j=0; j<users.length; j++){
-                    if(users[j].userid == response.data[i].userid){
-                      This.$refs.orgTabe.toggleRowSelection(This.userData[i],true);//回显
+                try{
+                  if(users[0].hasOwnProperty('user')){
+                    for(var n=0; n<response.data.length; n++){
+                      This.$refs.orgTabe.toggleRowSelection(This.userData[n],true);//回显
+                    }
+                  }else{
+                    for(var i=0; i<response.data.length; i++){
+                      for(var j=0; j<users.length; j++){
+                        if(users[j].userid == response.data[i].userid){
+                          This.$refs.orgTabe.toggleRowSelection(This.userData[i],true);//回显
+                        }
+                      }
                     }
                   }
-                }
+                }catch(e){}
               });
               /**数据回显结束*/
             }else{
@@ -180,14 +188,23 @@
           }
         },
         closeTag(orgid,userid){ //删除选中的人员
-          //alert(orgid + "===" +userid);
           var users = this.multipleSelection[orgid];
-          for(var i=0; i<users.length; i++){
-            if(users[i].userid == userid){
-              users.splice(i,1);
-            }
-          } 
-          console.log(users);
+          try{
+              if(users[0].hasOwnProperty('user')){//删除全选
+                var user = users[0].user;
+                for(var i=0; i<user.length; i++){
+                  this.$refs.orgTabe.toggleRowSelection(user[0],false)
+                }
+                users.splice(0,1);
+              }else{ //删除单个
+                for(var i=0; i<users.length; i++){
+                  if(users[i].userid == userid){
+                    users.splice(i,1);
+                  }
+                }
+              }
+          }catch(e){console.log(e)}
+          console.log(this.multipleSelection)
         },
         isSelect(row){
 
