@@ -1,8 +1,8 @@
 <!-- 组织架构人员选择 -->
 <template>
   <div> 
-    <el-row align="middle" justify="center" type="flex">
-      <el-col :span="7">
+    <el-row align="middle" justify="center" type="flex" gutter="20">
+      <el-col :span="7" class="el-table">
         <div class="max-h">
           <el-input
             placeholder="输入关键字进行过滤"
@@ -46,7 +46,9 @@
           </el-table>
         </div>
       </el-col>
-      <el-col :span="7" class="max-h">
+      <el-col :span="7" class="max-h el-table">
+        <!--<div>请选择部门或人员</div>-->
+        <div v-if="JSON.stringify(multipleSelection) == '{}'" style="height:100%;width:100%;line-height:350px;text-align: center" class="el-table__empty-text">请选择部门或人员</div>
         <span v-for="(users,key) in multipleSelection">
           <span v-for="user in users">
             <el-tag type="primary" :key="user.userid" close-transition="true" :closable="true" style="margin:5px;" @close="closeTag(key,user.userid)">{{user.chsname}}</el-tag>
@@ -62,6 +64,11 @@
     height: 350px;
     overflow-y:scroll;
   }
+  ::-webkit-scrollbar{width:5px;height:5px;}
+  ::-webkit-scrollbar-track{background-color:#eee;}
+  ::-webkit-scrollbar-thumb{background-color:#ccc;}
+  ::-webkit-scrollbar-thumb:hover {background-color:#555}
+  ::-webkit-scrollbar-thumb:active {background-color:#aaa}
 </style>
 
 <script>
@@ -172,6 +179,8 @@
             }catch(e){console.log(e)}
             Vue.set(this.multipleSelection,this.currentOrgid, val);
           }
+          //将数据传递给父组件
+          this.$emit("submitSelect",this.multipleSelection);
         },
         closeTag(orgid,userid){ //删除选中的人员
           var users = this.multipleSelection[orgid];
@@ -198,16 +207,6 @@
             }
           }
           console.log(this.multipleSelection)
-        },
-        isSelect(row){
-
-          //console.log(row.userid);
-        },
-        submitSelect(){
-          
-          //console.log(this.multipleSelection);
-          //console.log("提交选择的人员");
-          //this.$emit("submitSelect",this.multipleSelection);
         }
     },
     watch: {

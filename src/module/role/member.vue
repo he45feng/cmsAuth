@@ -2,7 +2,7 @@
 
   <div> 
     <el-row>
-      <el-col :span="6">
+      <el-col :span="6" border>
         <div class="max-h">
           <el-input
             placeholder="输入关键字进行过滤"
